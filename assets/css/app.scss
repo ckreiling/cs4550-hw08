@@ -1,0 +1,7 @@
+@import "./theme";
+
+.appContainer {
+  width: 900px;
+  margin: 0 auto;
+  background-color: map-get($map: $primary, $key: light);
+}
