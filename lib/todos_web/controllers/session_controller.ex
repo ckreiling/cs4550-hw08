@@ -16,5 +16,9 @@ defmodule TodosWeb.SessionController do
       |> put_resp_header("content-type", "application/json; charset=utf-8")
       |> send_resp(:created, Jason.encode!(resp))
     end
+
+    conn
+    |> put_resp_header("content-type", "application/json; charset=utf-8")
+    |> send_resp(400, Jason.encode!(%{"error" => "That is an invalid username/password combination"}))
   end
 end

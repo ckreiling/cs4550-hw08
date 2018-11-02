@@ -5,7 +5,7 @@ import { Router } from "@reach/router";
 import store from "./store";
 
 // routes
-import { Login } from "./routes";
+import { Login, Register } from "./routes";
 
 /**
  * The root of the SPA.
@@ -17,6 +17,7 @@ export default function(props) {
       <div className="appContainer">
         <Router>
           <Login path="login" />
+          <Register path="register" />
         </Router>
       </div>
     </Provider>

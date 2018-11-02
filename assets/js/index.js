@@ -16,6 +16,9 @@ import "phoenix_html";
 // Local files can be imported directly using relative paths, for example:
 // import socket from "./socket"
 
+// To use async-await
+import "@babel/polyfill";
+
 // Start our single page application
 import React from "react";
 import ReactDom from "react-dom";

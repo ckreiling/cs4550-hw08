@@ -1,18 +1,17 @@
 import React from "react";
-import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import { navigate } from "@reach/router/lib/history";
+import { navigate } from "@reach/router";
 
-import * as tokenActions from "../store/actions/token";
 import compose from "../utils/compose";
 import isLoggedIn from "../components/higher-order/is-logged-in";
+import * as userActions from "../store/actions/user";
 
 const initialState = () => ({
   username: "",
   password: ""
 });
 
-class Login extends React.Component {
+class Register extends React.Component {
   constructor(props) {
     super(props);
 
@@ -44,12 +43,13 @@ class Login extends React.Component {
 
   submit() {
     if (this.verifyInputs()) {
-      this.props.submit(this.state.username, this.state.password);
+      this.props.create(this.state.username, this.state.password);
     }
   }
 
   render() {
     if (this.props.isLoggedIn) {
+      // user should logout before trying to visit the register page
       navigate("/");
       return null;
     }
@@ -63,7 +63,7 @@ class Login extends React.Component {
       >
         {this.state.error ? this.state.error : ""}
         <div>
-          Username:
+          New Username:
           <input
             type="text"
             value={this.state.username}
@@ -71,27 +71,28 @@ class Login extends React.Component {
           />
         </div>
         <div>
-          Password:
+          New Password:
           <input
             type="password"
             value={this.state.password}
             onChange={this.handleInput("password")}
           />
         </div>
-        <button type="submit">Register</button>
+        <button type="submit">Login</button>
       </form>
     );
   }
 }
 
 const mapDispatchToProps = dispatch => ({
-  submit: bindActionCreators(tokenActions.fetchToken, dispatch)
+  create: (username, password) =>
+    dispatch(userActions.createUser(username, password))
 });
 
 export default compose(
-  isLoggedIn,
   connect(
     null,
     mapDispatchToProps
-  )
-)(Login);
+  ),
+  isLoggedIn
+)(Register);
