@@ -13,14 +13,14 @@ defmodule TodosWeb.Router do
     plug :accepts, ["json"]
   end
 
+  # Other scopes may use custom stacks.
+  scope "/api", TodosWeb do
+    pipe_through :api
+  end
+
   scope "/", TodosWeb do
     pipe_through :browser
 
-    get "/", PageController, :index
+    get "/*path", PageController, :index
   end
-
-  # Other scopes may use custom stacks.
-  # scope "/api", TodosWeb do
-  #   pipe_through :api
-  # end
 end

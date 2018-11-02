@@ -1,7 +1,11 @@
 import React from "react";
 import { Provider } from "react-redux";
+import { Router } from "@reach/router";
 
 import store from "./store";
+
+// routes
+import { Login } from "./routes";
 
 /**
  * The root of the SPA.
@@ -10,7 +14,11 @@ import store from "./store";
 export default function(props) {
   return (
     <Provider store={store}>
-      <div className="appContainer">Hello, world!</div>
+      <div className="appContainer">
+        <Router>
+          <Login path="login" />
+        </Router>
+      </div>
     </Provider>
   );
 }
