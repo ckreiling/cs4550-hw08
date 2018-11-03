@@ -1,4 +1,5 @@
 import React from "react";
+import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { navigate } from "@reach/router";
 
@@ -85,8 +86,7 @@ class Register extends React.Component {
 }
 
 const mapDispatchToProps = dispatch => ({
-  create: (username, password) =>
-    dispatch(userActions.createUser(username, password))
+  create: bindActionCreators(userActions.createUser, dispatch)
 });
 
 export default compose(

@@ -1,5 +1,6 @@
 import client from "../client";
 import { error } from "./error";
+import localStorageHandler from "../local-storage-handler";
 
 const UPDATE_TOKEN = "todos/token/update_token";
 const CLEAR_TOKEN = "todos/token/clear_token";
@@ -20,18 +21,20 @@ export function updateToken(token) {
 }
 
 export function deleteToken() {
+  localStorageHandler.removeToken();
   return { type: CLEAR_TOKEN };
 }
 
 // supplies login functionality
 export function fetchToken(email, password) {
-  return async (dispatch, getState) => {
+  return async dispatch => {
     const res = await client.fetchToken(email, password);
     if (res.error) {
       dispatch(error(res.error));
     } else {
-      localStorage.setItem("token", res.data.token);
-      dispatch(updateToken(res.data.token));
+      const { token } = res.data;
+      localStorageHandler.setToken(token);
+      dispatch(updateToken(token));
     }
   };
 }
