@@ -1,7 +1,47 @@
 @import "./theme";
 
-.appContainer {
+body {
+  margin: 0;
+}
+
+.container {
+  background-color: $color1;
+  margin-bottom: 1.45rem;
+}
+
+.contentContainer {
   width: 900px;
   margin: 0 auto;
-  background-color: map-get($map: $primary, $key: light);
+  padding: 1.45rem 1.0875rem;
+  display: flex;
+  justify-content: space-between;
+}
+
+.headerLink {
+  color: $color2;
+  text-decoration: none;
+  &:hover {
+    color: $color3;
+    text-decoration: underline;
+  }
+}
+
+.headerText {
+  margin: 0;
+}
+
+.navLink {
+  padding: 1em;
+}
+
+.logoutButton {
+  padding: 0.5em;
+  color: $color2;
+  background-color: $color1;
+  border-radius: 5px;
+  &:hover {
+    cursor: pointer;
+    background-color: $color2;
+    color: $color1;
+  }
 }
