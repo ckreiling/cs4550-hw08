@@ -41,12 +41,11 @@ to the client, given an email and password.
 
 #### `Authenticate` and `PutUser` plugs
 
-The `PutUser` plug extracts the `"auth-token"` header from the current `Plug.Conn`
-object, verifies the token using `Phoenix.Token.verify/3`, and finally reads
-the user from the database. If all three steps are successful, then the `Plug.Conn`
-is assigned `:current_user`.
+The `PutUserId` plug extracts the `"auth-token"` header from the current `Plug.Conn`
+object, verifies the token using `Phoenix.Token.verify/3`, and finally assigns
+the current `Plug.Conn` the `:user_id`.
 
-The `Authenticate` plug simply checks for the presense of `:current_user` in the
+The `Authenticate` plug simply checks for the presense of `:user_id` in the
 `Plug.Conn.assigns`, and sends a 403 response to the client if it is not present.
 
 ## Running the server

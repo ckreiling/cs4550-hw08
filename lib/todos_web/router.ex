@@ -11,7 +11,7 @@ defmodule TodosWeb.Router do
 
   pipeline :api do
     plug :accepts, ["json"]
-    plug TodosWeb.Plugs.PutUser
+    plug TodosWeb.Plugs.PutUserId
   end
 
   # Other scopes may use custom stacks.

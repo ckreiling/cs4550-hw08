@@ -4,7 +4,7 @@ defmodule TodosWeb.Plugs.Authenticate do
   def init(args), do: args
 
   def call(conn, _params) do
-    case conn.assigns[:current_user] do
+    case conn.assigns[:user_id] do
       nil -> 
         conn 
         |> send_resp(403, Jason.encode!(%{"error" => "You must be authenticated to access #{conn.request_path}"}))
