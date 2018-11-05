@@ -11,6 +11,7 @@ defmodule TodosWeb.Router do
 
   pipeline :api do
     plug :accepts, ["json"]
+    plug TodosWeb.Plugs.PutUser
   end
 
   # Other scopes may use custom stacks.
@@ -19,7 +20,7 @@ defmodule TodosWeb.Router do
   scope "/api/v1", TodosWeb do
     pipe_through :api
 
-    resources "/users", UserController, except: [:new, :edit]
+    resources "/users", UserController, only: [:create]
     resources "/session", SessionController, only: [:create]
   end
 

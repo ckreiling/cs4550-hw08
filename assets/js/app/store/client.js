@@ -9,6 +9,13 @@ const headers = {
   "Content-Type": "application/json"
 };
 
+function putTokenHeader(token) {
+  if (!token) {
+    throw new Error(`There is no token for the authenticated request.`);
+  }
+  return { ...headers, "auth-token": token };
+}
+
 function jsonFetch(request) {
   return fetch(request).then(res => res.json());
 }
@@ -33,4 +40,26 @@ function createUser(email, password) {
   return jsonFetch(req);
 }
 
-export default { fetchToken, createUser };
+function fetchUserInfo(token) {
+  const headers = putTokenHeader(token);
+
+  const req = new Request(`${basePath}/users`, {
+    method: "GET",
+    headers
+  });
+
+  return jsonFetch(req);
+}
+
+function fetchTodos(token) {
+  const headers = putTokenHeader(token);
+
+  const req = new Request(`${basePath}/todos`, {
+    method: "GET",
+    headers
+  });
+
+  return jsonFetch(req);
+}
+
+export default { fetchToken, createUser, fetchTodos, fetchUserInfo };
