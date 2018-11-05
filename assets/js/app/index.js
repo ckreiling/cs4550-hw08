@@ -5,7 +5,7 @@ import { Router } from "@reach/router";
 import store from "./store";
 
 // routes
-import { Login, Register, Home } from "./routes";
+import { Login, Register, AuthHome } from "./routes";
 import Layout from "./components/layout";
 
 /**
@@ -17,9 +17,10 @@ export default function(props) {
     <Provider store={store}>
       <Layout>
         <Router>
-          <Home path="/" />
           <Login path="login" />
           <Register path="register" />
+          {/** Will redirect if unauthenticated */}
+          <AuthHome default />
         </Router>
       </Layout>
     </Provider>

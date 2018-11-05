@@ -1,17 +1,15 @@
 import React from "react";
-import isLoggedIn from "../components/higher-order/is-logged-in";
-import { Link } from "@reach/router";
+import { Router } from "@reach/router";
 
-function Home({ isLoggedIn, ...props }) {
+import withAuthentication from "../components/higher-order/with-authentication";
+import TodosList from "../components/todos-list";
+
+function Home({ props }) {
   return (
-    <div>
-      {(!isLoggedIn && (
-        <p style={{ margin: "0 auto", textAlign: "center" }}>
-          <Link to="/login">Login to start creating todos!</Link>
-        </p>
-      )) || <AuthHome />}
-    </div>
+    <Router>
+      <TodosList path="todos" />
+    </Router>
   );
 }
 
-export default isLoggedIn(Home);
+export default withAuthentication(Home);

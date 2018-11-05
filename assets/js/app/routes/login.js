@@ -22,14 +22,12 @@ class Login extends React.Component {
     this.verifyInputs = this.verifyInputs.bind(this);
   }
 
-  handleInput(inputName) {
-    return event => {
-      if (event) {
-        this.setState({
-          [inputName]: event.target.value
-        });
-      }
-    };
+  handleInput(event) {
+    if (event) {
+      this.setState({
+        [event.target.name]: event.target.value
+      });
+    }
   }
 
   verifyInputs() {
@@ -67,7 +65,8 @@ class Login extends React.Component {
           <input
             type="text"
             value={this.state.username}
-            onChange={this.handleInput("username")}
+            name="username"
+            onChange={this.handleInput}
           />
         </div>
         <div>
@@ -75,7 +74,8 @@ class Login extends React.Component {
           <input
             type="password"
             value={this.state.password}
-            onChange={this.handleInput("password")}
+            name="password"
+            onChange={this.handleInput}
           />
         </div>
         <button type="submit">Login</button>
