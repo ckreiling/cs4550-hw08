@@ -9,10 +9,19 @@ defmodule TodosWeb.TodoItemController do
 
   action_fallback TodosWeb.FallbackController
 
-  def index(conn, _params) do
-    todos = TodoItems.list_todos()
-    render(conn, "index.json", todos: todos)
+  def my_assigned_todos(conn, _params) do
+    user_id = conn.assigns[:user_id]
+    todos = TodoItems.get_assigned_todos_for_user(user_id)
+    render(conn, "index.json", %{todos: todos})
   end
+
+  def index(conn, _params) do
+    user_id = conn.assigns[:user_id]
+    todos = TodoItems.get_todos_for_user(user_id)
+    render(conn, "index.json", %{todos: todos})
+  end
+
+  # Auto-generated
 
   def create(conn, %{"todo_item" => todo_item_params}) do
     todo_item_params = Map.put(todo_item_params, "user_id", conn.assigns[:user_id])
@@ -22,12 +31,6 @@ defmodule TodosWeb.TodoItemController do
       |> put_resp_header("location", Routes.todo_item_path(conn, :show, todo_item))
       |> render("show.json", todo_item: todo_item)
     end
-  end
-
-  def my_todos(conn, _params) do
-    user_id = conn.assigns[:user_id]
-    todos = TodoItems.get_todos_for_user(user_id)
-    render(conn, "index.json", %{todos: todos})
   end
 
   def show(conn, %{"id" => id}) do

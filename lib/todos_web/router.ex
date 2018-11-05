@@ -20,9 +20,13 @@ defmodule TodosWeb.Router do
   scope "/api/v1", TodosWeb do
     pipe_through :api
 
+    # Unauthenticated
     resources "/users", UserController, only: [:create]
     resources "/session", SessionController, only: [:create]
-    resources "/todos", TodoItemController, except: [:new, :edit]
+
+    # Authenticated; these routes rely on a token passed in the header of the request
+    resources "/todos", TodoItemController, only: [:create, :index]
+    get "/assigned", TodoItemController, :my_assigned_todos
   end
 
   scope "/", TodosWeb do
