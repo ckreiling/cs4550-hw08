@@ -17,6 +17,7 @@ export default function reducer(state = "", action) {
 }
 
 export function updateToken(token) {
+  localStorageHandler.setToken(token);
   return { type: UPDATE_TOKEN, payload: token };
 }
 
@@ -33,7 +34,6 @@ export function fetchToken(email, password) {
       dispatch(error(res.error));
     } else {
       const { token } = res.data;
-      localStorageHandler.setToken(token);
       dispatch(updateToken(token));
     }
   };

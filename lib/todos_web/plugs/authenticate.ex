@@ -7,7 +7,7 @@ defmodule TodosWeb.Plugs.Authenticate do
     case conn.assigns[:current_user] do
       nil -> 
         conn 
-        |> send_resp(403, Jason.encode!(%{"error" => "That is an invalid username/password combination"}))
+        |> send_resp(403, Jason.encode!(%{"error" => "You must be authenticated to access #{conn.request_path}"}))
         |> halt()
       _ -> 
         conn
