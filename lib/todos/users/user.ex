@@ -9,6 +9,9 @@ defmodule Todos.Users.User do
 
     field :password, :string, virtual: true
 
+    has_many :todos, Todos.TodoItems.TodoItem
+    has_many :assigned_todos, Todos.TodoItems.TodoItem, foreign_key: :assigned_user_id
+
     timestamps()
   end
 

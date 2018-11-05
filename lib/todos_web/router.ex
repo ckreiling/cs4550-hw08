@@ -22,6 +22,7 @@ defmodule TodosWeb.Router do
 
     resources "/users", UserController, only: [:create]
     resources "/session", SessionController, only: [:create]
+    resources "/todos", TodoItemController, except: [:new, :edit]
   end
 
   scope "/", TodosWeb do
