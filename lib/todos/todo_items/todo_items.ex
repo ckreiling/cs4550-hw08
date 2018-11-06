@@ -86,6 +86,12 @@ defmodule Todos.TodoItems do
     |> Repo.update()
   end
 
+  def toggle_todo_item(id) do
+    todo_item = get_todo_item!(id)
+    new_todo_item = Map.put(todo_item, :completed, !todo_item.completed)
+    update_todo_item(todo_item, new_todo_item)
+  end
+
   @doc """
   Deletes a TodoItem.
 

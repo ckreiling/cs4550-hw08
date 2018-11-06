@@ -1,11 +1,14 @@
 defmodule TodosWeb.TodoItemController do
   use TodosWeb, :controller
 
+  import TodosWeb.TodoItemPlugs
+
   alias Todos.TodoItems
   alias Todos.TodoItems.TodoItem
 
-  # All endpoints here need to be authenticated
-  plug TodosWeb.Plugs.Authenticate
+  # Ensure that the user owns the given todo on delete or update
+  plug :is_owner when action in [:delete, :toggle_completed]
+  plug :is_assigned when action in [:toggle_completed]
 
   action_fallback TodosWeb.FallbackController
 
@@ -21,6 +24,17 @@ defmodule TodosWeb.TodoItemController do
     render(conn, "index.json", %{todos: todos})
   end
 
+  def toggle_completed(conn, %{"id" => id}) do
+    with true <- conn.assigns[:is_owner] || conn.assigns[:is_assigned],
+        {:ok, %TodoItem{} = todo_item} <- TodoItems.toggle_todo_item(id) do
+      render(conn, "show.json", todo_item: todo_item)
+    else
+      _ -> 
+        conn
+        |> send_resp(403, Jason.encode!(%{"error" => "You must be an owner or assigned the todo with ID #{id} to toggle its completeness."}))
+    end
+  end
+
   # Auto-generated
 
   def create(conn, %{"todo_item" => todo_item_params}) do
@@ -28,7 +42,6 @@ defmodule TodosWeb.TodoItemController do
     with {:ok, %TodoItem{} = todo_item} <- TodoItems.create_todo_item(todo_item_params) do
       conn
       |> put_status(:created)
-      |> put_resp_header("location", Routes.todo_item_path(conn, :show, todo_item))
       |> render("show.json", todo_item: todo_item)
     end
   end

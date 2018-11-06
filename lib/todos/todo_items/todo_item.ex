@@ -6,7 +6,7 @@ defmodule Todos.TodoItems.TodoItem do
   schema "todos" do
     field :completed, :boolean, default: false
     field :description, :string
-    field :time_spent, :integer
+    field :time_spent, :integer, default: 0
     field :title, :string
 
     belongs_to :user, Todos.Users.User

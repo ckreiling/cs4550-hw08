@@ -11,22 +11,31 @@ defmodule TodosWeb.Router do
 
   pipeline :api do
     plug :accepts, ["json"]
+  end
+
+  pipeline :get_user do
     plug TodosWeb.Plugs.PutUserId
   end
 
-  # Other scopes may use custom stacks.
-  # Putting this above the browser scope prioritizes these endpoints
-  # over the browser's catch-all endpoint.
-  scope "/api/v1", TodosWeb do
-    pipe_through :api
+  pipeline :authenticate do
+    # must be AFTER the :get_user pipeline
+    plug TodosWeb.Plugs.Authenticate
+  end
 
-    # Unauthenticated
+  scope "/api/v1", TodosWeb do
+    pipe_through [:api, :get_user]
+
     resources "/users", UserController, only: [:create]
     resources "/session", SessionController, only: [:create]
+  end
 
-    # Authenticated; these routes rely on a token passed in the header of the request
+  # Authenticated; these routes rely on a token passed in the header of the request
+  scope "/api/v1", TodosWeb do
+    pipe_through [:api, :get_user, :authenticate]
+
     resources "/todos", TodoItemController, only: [:create, :index]
-    get "/assigned", TodoItemController, :my_assigned_todos
+    post "/toggle-todo", TodoItemController, :toggle_completed
+    get "/assigned", TodoItemController, :my_assigned_todos   
   end
 
   scope "/", TodosWeb do

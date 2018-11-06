@@ -16,7 +16,7 @@ defmodule TodosWeb.TodoItemView do
       description: todo_item.description,
       time_spent: todo_item.time_spent,
       completed: todo_item.completed,
-      assigned_user: todo_item.assigned_user,
-      user: todo_item.user}
+      user_id: todo_item.user_id,
+      assigned_user_id: todo_item.assigned_user_id}
   end
 end
