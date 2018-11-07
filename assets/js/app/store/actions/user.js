@@ -16,8 +16,8 @@ export default function reducer(state = {}, action) {
   }
 }
 
-export function updateUser(user) {
-  return { type: UPDATE_USER, payload: user };
+export function updateUser(userId, email) {
+  return { type: UPDATE_USER, payload: { userId, email } };
 }
 
 export function clearUser() {
@@ -31,7 +31,6 @@ export function createUser(email, password) {
 
     if (!res.errors) {
       dispatch(fetchToken(email, password));
-      dispatch(updateUser(email));
     } else {
       dispatch(
         errors.error(

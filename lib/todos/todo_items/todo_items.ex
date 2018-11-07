@@ -22,6 +22,12 @@ defmodule Todos.TodoItems do
     |> Repo.preload([:user, :assigned_user])
   end
 
+  def todo_item_exist_by_id(id) do
+    # select just id to reduce payload
+    query = (from t in TodoItem, where: t.id == ^id, select: %{id: t.id})
+    Repo.one(query) != nil
+  end
+
   @doc """
   Gets a single todo_item.
 
@@ -37,6 +43,8 @@ defmodule Todos.TodoItems do
 
   """
   def get_todo_item!(id), do: Repo.get!(TodoItem, id)
+  
+  def get_todo_item(id), do: Repo.get(TodoItem, id)
 
   def get_todos_for_user(user_id) do
     Repo.all from t in TodoItem,
@@ -87,9 +95,10 @@ defmodule Todos.TodoItems do
   end
 
   def toggle_todo_item(id) do
-    todo_item = get_todo_item!(id)
-    new_todo_item = Map.put(todo_item, :completed, !todo_item.completed)
-    update_todo_item(todo_item, new_todo_item)
+    todo_item = Repo.get(TodoItem, id)
+    todo_item
+    |> Ecto.Changeset.change(completed: not todo_item.completed)
+    |> Repo.update
   end
 
   @doc """

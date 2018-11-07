@@ -1,6 +1,7 @@
 import client from "../client";
 import { error } from "./error";
 import localStorageHandler from "../local-storage-handler";
+import { updateUser } from "./user";
 
 const UPDATE_TOKEN = "todos/token/update_token";
 const CLEAR_TOKEN = "todos/token/clear_token";
@@ -33,8 +34,9 @@ export function fetchToken(email, password) {
     if (res.error) {
       dispatch(error(res.error));
     } else {
-      const { token } = res.data;
+      const { token, user_id } = res.data;
       dispatch(updateToken(token));
+      dispatch(updateUser(user_id, email));
     }
   };
 }

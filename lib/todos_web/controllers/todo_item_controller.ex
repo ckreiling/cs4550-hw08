@@ -6,6 +6,9 @@ defmodule TodosWeb.TodoItemController do
   alias Todos.TodoItems
   alias Todos.TodoItems.TodoItem
 
+  # Checks to make sure any request params with an "id" key has a corresponding
+  # todo item in the DB. Otherwise replies 404.
+  plug :todo_item_exists
   # Ensure that the user owns the given todo on delete or update
   plug :is_owner when action in [:delete, :toggle_completed]
   plug :is_assigned when action in [:toggle_completed]

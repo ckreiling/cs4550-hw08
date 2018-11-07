@@ -1,3 +1,5 @@
+import { recursiveSnakeToCamel } from "../utils/snake-to-camel";
+
 /**
  * File for our HTTP client. Consolidates the interactions w/ the backend to
  * a single file.
@@ -17,7 +19,9 @@ function putTokenHeader(token) {
 }
 
 function jsonFetch(request) {
-  return fetch(request).then(res => res.json());
+  return fetch(request)
+    .then(res => res.json())
+    .then(json => recursiveSnakeToCamel(json));
 }
 
 function fetchToken(email, password) {
