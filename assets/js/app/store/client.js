@@ -21,7 +21,7 @@ function putTokenHeader(token) {
 function jsonFetch(request) {
   return fetch(request)
     .then(res => res.json())
-    .then(json => recursiveSnakeToCamel(json));
+    .then(recursiveSnakeToCamel);
 }
 
 function fetchToken(email, password) {

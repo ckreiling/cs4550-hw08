@@ -12,17 +12,20 @@ class TodoList extends React.Component {
   render() {
     const { todos } = this.props;
 
+    const todosArray = Object.keys(todos).map(id => todos[id]);
+
     return (
       <div>
-        {todos && todos.map(todo => <p key={todo.id}>{todo.title}</p>)}
-        {!todos && "You have no todos!!!"}
+        {todosArray.length !== 0 &&
+          todosArray.map(todo => <p key={todo.id}>{todo.title}</p>)}
+        {todosArray.length === 0 && "You have no todos!!!"}
       </div>
     );
   }
 }
 
 const mapStateToProps = ({ todos }) => ({
-  todos: Object.keys(todos).map(id => todos[id])
+  todos
 });
 
 const mapDispatchToProps = dispatch => ({
