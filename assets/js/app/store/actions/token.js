@@ -1,10 +1,9 @@
 import client from "../client";
 import { error } from "./error";
-import localStorageHandler from "../local-storage-handler";
-import { updateUser } from "./user";
+import { fetchCurrentUser } from "./user";
 
-const UPDATE_TOKEN = "todos/token/update_token";
-const CLEAR_TOKEN = "todos/token/clear_token";
+export const UPDATE_TOKEN = "todos/token/update_token";
+export const CLEAR_TOKEN = "todos/token/clear_token";
 
 export default function reducer(state = "", action) {
   switch (action.type) {
@@ -18,12 +17,10 @@ export default function reducer(state = "", action) {
 }
 
 export function updateToken(token) {
-  localStorageHandler.setToken(token);
   return { type: UPDATE_TOKEN, payload: token };
 }
 
 export function deleteToken() {
-  localStorageHandler.removeToken();
   return { type: CLEAR_TOKEN };
 }
 
@@ -36,7 +33,7 @@ export function fetchToken(email, password) {
     } else {
       const { token, user_id } = res.data;
       dispatch(updateToken(token));
-      dispatch(updateUser(user_id, email));
+      dispatch(fetchCurrentUser(user_id, email));
     }
   };
 }

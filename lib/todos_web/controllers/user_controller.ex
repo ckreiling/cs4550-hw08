@@ -6,6 +6,14 @@ defmodule TodosWeb.UserController do
 
   action_fallback TodosWeb.FallbackController
 
+  def current_user(conn, _) do
+    # this is authenticated so we know that there's a valid user_id in the 
+    # current Plug.Conn
+    user_id = conn.assigns[:user_id]
+    user = Users.get_user!(user_id)
+    render(conn, "show.json", user: user)
+  end
+
   def index(conn, _params) do
     users = Users.list_users()
     render(conn, "index.json", users: users)

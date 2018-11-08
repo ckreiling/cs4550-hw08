@@ -1,11 +1,10 @@
 import { createStore, applyMiddleware } from "redux";
 import thunk from "redux-thunk";
 
-import localStorageHandler from "./local-storage-handler";
 import rootReducer from "./root-reducer";
-import { updateToken } from "./actions/token";
+import localStorageMiddleware from "./middleware/local-storage";
 
-let middleware = [thunk];
+let middleware = [thunk, localStorageMiddleware];
 
 if (process.env.NODE_ENV !== "production") {
   // non-production middleware
@@ -14,12 +13,5 @@ if (process.env.NODE_ENV !== "production") {
 }
 
 const store = createStore(rootReducer, applyMiddleware(...middleware));
-
-// If the token is stored in the browser's localStorage, authenticate the user
-// on page-load.
-const token = localStorageHandler.getToken();
-if (token) {
-  store.dispatch(updateToken(token));
-}
 
 export default store;

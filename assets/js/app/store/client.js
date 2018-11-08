@@ -47,7 +47,7 @@ function createUser(email, password) {
 function fetchUserInfo(token) {
   const headers = putTokenHeader(token);
 
-  const req = new Request(`${basePath}/users`, {
+  const req = new Request(`${basePath}/me`, {
     method: "GET",
     headers
   });

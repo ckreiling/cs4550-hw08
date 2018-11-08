@@ -24,6 +24,16 @@ export function clearUser() {
   return { type: CLEAR_USER };
 }
 
+export function fetchCurrentUser() {
+  return async (dispatch, getState) => {
+    const { token } = getState();
+
+    const { data: user } = await client.fetchUserInfo(token);
+
+    dispatch(updateUser(user.id, user.email));
+  };
+}
+
 // used for user registration, and then login
 export function createUser(email, password) {
   return async (dispatch, getState) => {

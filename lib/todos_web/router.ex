@@ -34,6 +34,7 @@ defmodule TodosWeb.Router do
     pipe_through [:api, :get_user, :authenticate]
 
     resources "/todos", TodoItemController, only: [:create, :index]
+    get "/me", UserController, :current_user
     post "/toggle-todo", TodoItemController, :toggle_completed
     get "/assigned", TodoItemController, :my_assigned_todos   
   end
