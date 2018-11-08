@@ -35,3 +35,23 @@ export function fetchTodos() {
     dispatch(updateTodos(todosState));
   };
 }
+
+export function toggleTodoCompleted(todoId) {
+  return async (dispatch, getState) => {
+    const { token, todos } = getState();
+
+    const { data: todo, error } = await client.toggleTodoCompleted(
+      token,
+      todoId
+    );
+
+    // todo handle error case? shouldn't be possible with the current app tho
+
+    const updatedTodos = {
+      ...todos,
+      [todo.id]: todo
+    };
+
+    dispatch(updateTodos(updatedTodos));
+  };
+}

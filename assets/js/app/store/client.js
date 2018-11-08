@@ -12,7 +12,7 @@ const headers = {
 };
 
 function putTokenHeader(token) {
-  if (!token) {
+  if (process.env.NODE_ENV !== "production" && !token) {
     throw new Error(`There is no token for the authenticated request.`);
   }
   return { ...headers, "auth-token": token };
@@ -66,4 +66,22 @@ function fetchTodos(token) {
   return jsonFetch(req);
 }
 
-export default { fetchToken, createUser, fetchTodos, fetchUserInfo };
+function toggleTodoCompleted(token, todoId) {
+  const headers = putTokenHeader(token);
+
+  const req = new Request(`${basePath}/toggle-todo`, {
+    method: "POST",
+    headers,
+    body: { id: todoId }
+  });
+
+  return jsonFetch(req);
+}
+
+export default {
+  fetchToken,
+  createUser,
+  fetchTodos,
+  fetchUserInfo,
+  toggleTodoCompleted
+};
