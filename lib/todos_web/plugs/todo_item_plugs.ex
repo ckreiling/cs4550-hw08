@@ -13,7 +13,7 @@ defmodule TodosWeb.TodoItemPlugs do
     with %TodoItem{} = todo <- TodoItems.get_todo_item(id),
       true <- todo.user_id == conn.assigns[:user_id]
       do
-        conn = conn |> assign(:is_owner, true)
+        conn |> assign(:is_owner, true)
       else
         _ -> conn
     end
