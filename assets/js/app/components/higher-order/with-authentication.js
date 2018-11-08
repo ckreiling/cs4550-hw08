@@ -8,7 +8,7 @@ const withAuthentication = (Component, to = "/login") =>
     if (isLoggedIn) {
       return <Component {...props} />;
     } else {
-      return <Redirect to={to} />;
+      return <Redirect to={to} noThrow />;
     }
   });
 

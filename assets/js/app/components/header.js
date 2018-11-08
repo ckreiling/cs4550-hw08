@@ -9,16 +9,23 @@ function Header({ isLoggedIn, ...props }) {
     <div className="container">
       <div className="contentContainer">
         <h1 className="headerText">
-          <Link to="/" className="headerLink">
+          <Link to="/todos" className="headerLink">
             The Todo App
           </Link>
         </h1>
         {isLoggedIn && (
-          <nav>
-            <Link className="navLink" to="/">
-              Home
-            </Link>
+          <nav className="nav">
             <LogoutButton className="logoutButton" />
+          </nav>
+        )}
+        {!isLoggedIn && (
+          <nav className="nav">
+            <Link className="navLink" to="/login">
+              Login
+            </Link>
+            <Link className="navLink" to="/register">
+              Register
+            </Link>
           </nav>
         )}
       </div>

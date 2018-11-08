@@ -1,22 +1,12 @@
 import React from "react";
-import { bindActionCreators } from "redux";
-import { connect } from "react-redux";
-import { Redirect } from "@reach/router";
-
-import * as tokenActions from "../store/actions/token";
-import compose from "../utils/compose";
-import isLoggedIn from "../components/higher-order/is-logged-in";
-
-const initialState = () => ({
-  username: "",
-  password: ""
-});
 
 class Login extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = initialState();
+    // If a todo is passed in as a prop, we intend to edit it. Otherwise
+    // we're creating a new todo.
+    this.state = props.todo ? { todo: props.todo } : { todo: null };
 
     this.handleInput = this.handleInput.bind(this);
     this.verifyInputs = this.verifyInputs.bind(this);
@@ -47,10 +37,6 @@ class Login extends React.Component {
   }
 
   render() {
-    if (this.props.isLoggedIn) {
-      return <Redirect to="/todos" noThrow />;
-    }
-
     return (
       <form
         onSubmit={e => {
@@ -77,20 +63,8 @@ class Login extends React.Component {
             onChange={this.handleInput}
           />
         </div>
-        <button type="submit">Login</button>
+        <button type="submit">Update</button>
       </form>
     );
   }
 }
-
-const mapDispatchToProps = dispatch => ({
-  submit: bindActionCreators(tokenActions.fetchToken, dispatch)
-});
-
-export default compose(
-  isLoggedIn,
-  connect(
-    null,
-    mapDispatchToProps
-  )
-)(Login);

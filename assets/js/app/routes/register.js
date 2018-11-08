@@ -1,7 +1,7 @@
 import React from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import { navigate } from "@reach/router";
+import { Redirect } from "@reach/router";
 
 import compose from "../utils/compose";
 import isLoggedIn from "../components/higher-order/is-logged-in";
@@ -50,9 +50,7 @@ class Register extends React.Component {
 
   render() {
     if (this.props.isLoggedIn) {
-      // user should logout before trying to visit the register page
-      navigate("/");
-      return null;
+      return <Redirect to="/todos" noThrow />;
     }
 
     return (

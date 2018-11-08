@@ -30,8 +30,18 @@ body {
   margin: 0;
 }
 
+.nav {
+  justify-content: flex-end;
+  vertical-align: middle;
+}
+
 .navLink {
   padding: 1em;
+  color: $color2;
+  text-decoration: none;
+  &:hover {
+    text-decoration: underline;
+  }
 }
 
 .logoutButton {
