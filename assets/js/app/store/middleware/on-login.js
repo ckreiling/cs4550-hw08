@@ -12,8 +12,7 @@ import { fetchAllUsers } from "../actions/all-users";
 const onLoginMiddleware = ({ dispatch, getState }) => next => action => {
   let result = next(action);
   if (action.type === UPDATE_TOKEN) {
-    const token = action.payload;
-    dispatch(fetchCurrentUser(token));
+    dispatch(fetchCurrentUser());
     dispatch(fetchAllUsers());
   }
   return result;

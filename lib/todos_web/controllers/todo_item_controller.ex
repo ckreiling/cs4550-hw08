@@ -9,9 +9,10 @@ defmodule TodosWeb.TodoItemController do
   # Checks to make sure any request params with an "id" key has a corresponding
   # todo item in the DB. Otherwise replies 404.
   plug :todo_item_exists
-  # Ensure that the user owns the given todo on delete or update
-  plug :is_owner when action in [:delete, :toggle_completed]
-  plug :is_assigned when action in [:toggle_completed]
+  # attach flags to the Plug.Conn noting whether or not the request's associated
+  # user is the owner of or assigned to todo associated with the given ID
+  plug :is_owner
+  plug :is_assigned
 
   action_fallback TodosWeb.FallbackController
 
@@ -38,6 +39,19 @@ defmodule TodosWeb.TodoItemController do
     end
   end
 
+  def update(conn, %{"id" => id, "todo_item" => todo_item_params}) do
+    unless conn.assigns[:is_owner] do
+      conn
+      |> send_resp(403, Jason.encode!(%{"error" => "You must be an owner of the todo with ID #{id} to update it."}))
+    else
+      todo_item = TodoItems.get_todo_item!(id)
+
+      with {:ok, %TodoItem{} = todo_item} <- TodoItems.update_todo_item(todo_item, todo_item_params) do
+        render(conn, "show.json", todo_item: todo_item)
+      end
+    end
+  end
+
   # Auto-generated
 
   def create(conn, %{"todo_item" => todo_item_params}) do
@@ -52,14 +66,6 @@ defmodule TodosWeb.TodoItemController do
   def show(conn, %{"id" => id}) do
     todo_item = TodoItems.get_todo_item!(id)
     render(conn, "show.json", todo_item: todo_item)
-  end
-
-  def update(conn, %{"id" => id, "todo_item" => todo_item_params}) do
-    todo_item = TodoItems.get_todo_item!(id)
-
-    with {:ok, %TodoItem{} = todo_item} <- TodoItems.update_todo_item(todo_item, todo_item_params) do
-      render(conn, "show.json", todo_item: todo_item)
-    end
   end
 
   def delete(conn, %{"id" => id}) do

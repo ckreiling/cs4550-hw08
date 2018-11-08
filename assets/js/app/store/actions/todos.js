@@ -16,10 +16,6 @@ export function updateTodos(idToTodo) {
   return { type: UPDATE_TODOS, payload: idToTodo };
 }
 
-export function newTodo(todo) {
-  return async (dispatch, getState) => {};
-}
-
 export function fetchTodos() {
   return async (dispatch, getState) => {
     const { token } = getState();
@@ -33,6 +29,22 @@ export function fetchTodos() {
     }, {});
 
     dispatch(updateTodos(todosState));
+  };
+}
+
+export function createOrUpdateTodo(todo) {
+  return async (dispatch, getState) => {
+    const { token } = getState();
+
+    // If the todo has an ID, then we're just updating it.
+    if (todo.id) {
+      await client.updateTodo(token, todo.id, todo);
+    } else {
+      await client.createTodo(token, todo);
+    }
+
+    // After creating or updating a todo, re-fetch the todos-list for the user.
+    dispatch(fetchTodos());
   };
 }
 

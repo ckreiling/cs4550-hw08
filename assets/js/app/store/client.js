@@ -1,4 +1,5 @@
 import { recursiveSnakeToCamel } from "../utils/snake-to-camel";
+import { recursiveCamelToSnake } from "../utils/camel-to-snake";
 
 /**
  * File for our HTTP client. Consolidates the interactions w/ the backend to
@@ -87,11 +88,41 @@ function toggleTodoCompleted(token, todoId) {
   return jsonFetch(req);
 }
 
+function createTodo(token, todo) {
+  const headers = putTokenHeader(token);
+
+  const req = new Request(`${basePath}/todos`, {
+    method: "POST",
+    headers,
+    body: JSON.stringify({
+      todo_item: recursiveCamelToSnake(todo)
+    })
+  });
+
+  return jsonFetch(req);
+}
+
+function updateTodo(token, id, todo) {
+  const headers = putTokenHeader(token);
+
+  const req = new Request(`${basePath}/todos/${id}`, {
+    method: "PATCH",
+    headers,
+    body: JSON.stringify({
+      todo_item: recursiveCamelToSnake(todo)
+    })
+  });
+
+  return jsonFetch(req);
+}
+
 export default {
   fetchToken,
   createUser,
   fetchTodos,
   fetchUserInfo,
   toggleTodoCompleted,
-  fetchAllUsers
+  fetchAllUsers,
+  createTodo,
+  updateTodo
 };

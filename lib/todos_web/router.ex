@@ -33,7 +33,7 @@ defmodule TodosWeb.Router do
   scope "/api/v1", TodosWeb do
     pipe_through [:api, :get_user, :authenticate]
 
-    resources "/todos", TodoItemController, only: [:create, :index]
+    resources "/todos", TodoItemController, only: [:create, :index, :update]
     get "/me", UserController, :current_user
     post "/toggle-todo", TodoItemController, :toggle_completed
     get "/assigned", TodoItemController, :my_assigned_todos   

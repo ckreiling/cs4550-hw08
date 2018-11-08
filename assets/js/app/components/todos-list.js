@@ -1,6 +1,7 @@
 import React from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
+import { Link } from "@reach/router";
 
 import { fetchTodos } from "../store/actions/todos";
 
@@ -17,8 +18,13 @@ class TodoList extends React.Component {
     return (
       <div>
         {todosArray.length !== 0 &&
-          todosArray.map(todo => <p key={todo.id}>{todo.title}</p>)}
+          todosArray.map(todo => (
+            <Link to={`/todos/${todo.id}`} key={todo.id}>
+              {todo.title}
+            </Link>
+          ))}
         {todosArray.length === 0 && "You have no todos!!!"}
+        {this.props.children}
       </div>
     );
   }
