@@ -25,7 +25,7 @@ defmodule TodosWeb.Router do
   scope "/api/v1", TodosWeb do
     pipe_through [:api, :get_user]
 
-    resources "/users", UserController, only: [:create]
+    resources "/users", UserController, only: [:create, :index]
     resources "/session", SessionController, only: [:create]
   end
 

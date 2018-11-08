@@ -55,6 +55,15 @@ function fetchUserInfo(token) {
   return jsonFetch(req);
 }
 
+function fetchAllUsers() {
+  const req = new Request(`${basePath}/users`, {
+    method: "GET",
+    headers
+  });
+
+  return jsonFetch(req);
+}
+
 function fetchTodos(token) {
   const headers = putTokenHeader(token);
 
@@ -83,5 +92,6 @@ export default {
   createUser,
   fetchTodos,
   fetchUserInfo,
-  toggleTodoCompleted
+  toggleTodoCompleted,
+  fetchAllUsers
 };

@@ -6,10 +6,18 @@ class Login extends React.Component {
 
     // If a todo is passed in as a prop, we intend to edit it. Otherwise
     // we're creating a new todo.
-    this.state = props.todo ? { todo: props.todo } : { todo: null };
+    this.state = props.todo
+      ? { todo: props.todo }
+      : {
+          todo: {
+            title: "",
+            description: ""
+          }
+        };
 
     this.handleInput = this.handleInput.bind(this);
     this.verifyInputs = this.verifyInputs.bind(this);
+    this.submit = this.submit.bind(this);
   }
 
   handleInput(event) {
@@ -21,9 +29,9 @@ class Login extends React.Component {
   }
 
   verifyInputs() {
-    if (!this.state.username || !this.state.password) {
+    if (!this.state.todo.title || !this.state.todo.description) {
       this.setState({
-        error: "You must fill both the username and the password fields."
+        error: "You must fill both the title and the description fields."
       });
       return false;
     }
@@ -32,7 +40,7 @@ class Login extends React.Component {
 
   submit() {
     if (this.verifyInputs()) {
-      this.props.submit(this.state.username, this.state.password);
+      this.props.submit(this.state.todo);
     }
   }
 
@@ -46,20 +54,20 @@ class Login extends React.Component {
       >
         {this.state.error ? this.state.error : ""}
         <div>
-          Username:
+          Title:
           <input
             type="text"
-            value={this.state.username}
+            name="title"
+            value={this.state.todo.title}
             name="username"
             onChange={this.handleInput}
           />
         </div>
         <div>
-          Password:
-          <input
-            type="password"
-            value={this.state.password}
-            name="password"
+          Description:
+          <textarea
+            name="description"
+            value={this.state.todo.description}
             onChange={this.handleInput}
           />
         </div>

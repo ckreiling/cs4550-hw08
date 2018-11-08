@@ -33,7 +33,6 @@ export function fetchToken(email, password) {
     } else {
       const { token, user_id } = res.data;
       dispatch(updateToken(token));
-      dispatch(fetchCurrentUser(user_id, email));
     }
   };
 }

@@ -1,23 +1,17 @@
 import { UPDATE_TOKEN, CLEAR_TOKEN } from "../actions/token";
 
-const tokenKey = "token";
+export const tokenKey = "token";
 
 const localStorageMiddleware = ({ dispatch, getState }) => next => action => {
   switch (action.type) {
     case UPDATE_TOKEN:
-      localStorage.setItem(tokenKey, token);
+      localStorage.setItem(tokenKey, action.payload);
       break;
     case CLEAR_TOKEN:
       localStorage.removeItem(tokenKey);
       break;
     default:
       break;
-  }
-
-  // When we initialize the store, check localStorage for the token.
-  let token;
-  if (getState() === "undefined" && (token = localStorage.getItem(tokenKey))) {
-    dispatch(updateToken(token));
   }
 
   // send it onward
