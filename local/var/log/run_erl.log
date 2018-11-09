@@ -1,0 +1,8 @@
+run_erl [22525] Fri Nov  9 14:29:48 2018
+Args before exec of shell:
+run_erl [22525] Fri Nov  9 14:29:48 2018
+argv[0] = sh
+run_erl [22525] Fri Nov  9 14:29:48 2018
+argv[1] = -c
+run_erl [22525] Fri Nov  9 14:29:48 2018
+argv[2] = exec "/home/kreiling/code/f2018/webdev/hw08/local/bin/todos" "console" --  
