@@ -4,38 +4,42 @@ import { bindActionCreators } from "redux";
 
 import { createOrUpdateTodo } from "../store/actions/todos";
 
+const getInitialState = () => ({
+  isOwner: true,
+  todo: { title: "", description: "" },
+  isSet: false
+});
+
 class TodoItemForm extends React.Component {
   constructor(props) {
     super(props);
 
-    const todoId = new Number(props.todoId);
-
-    console.log(props);
-    this.state = {};
-
-    // If a todo is passed in as a prop, we intend to edit it. Otherwise
-    // we're creating a new todo.
-    if (props.todoId) {
-      if (props.todos[todoId]) {
-        this.state.todo = props.todos[todoId];
-      } else {
-        this.state.error = `You don't own and are not assigned the todo with Id ${todoId}`;
-        this.state.todo = {};
-      }
-    } else {
-      this.state = {
-        todo: {
-          title: "",
-          description: ""
-        }
-      };
-    }
-
-    this.state.isOwner = this.state.todo.userId === this.props.currentUserId;
+    this.state = getInitialState();
 
     this.handleInput = this.handleInput.bind(this);
     this.verifyInputs = this.verifyInputs.bind(this);
     this.submit = this.submit.bind(this);
+    this.newNumber = this.newNumber.bind(this);
+  }
+
+  static getDerivedStateFromProps(props, state) {
+    const condition =
+      (Object.keys(props.todos).length !== 0 &&
+        props.currentUserId !== undefined &&
+        props.todoId &&
+        !props.newTodo &&
+        !state.isSet) ||
+      (!props.newTodo && props.todoId != state.todo.id);
+    if (condition) {
+      const todoId = new Number(props.todoId);
+      if (props.todos[todoId]) {
+        state.todo = props.todos[todoId];
+      }
+
+      state.isOwner = state.todo.userId == props.currentUserId;
+      state.isSet = true;
+    }
+    return state;
   }
 
   handleInput(event) {
@@ -48,7 +52,11 @@ class TodoItemForm extends React.Component {
   }
 
   verifyInputs() {
-    if (!this.state.todo.title || !this.state.todo.description) {
+    if (
+      !this.state.todo.title ||
+      !this.state.todo.description ||
+      this.state.todo.minutesSpent < 0
+    ) {
       this.setState({
         error: "You must fill the required title and description fields."
       });
@@ -63,6 +71,27 @@ class TodoItemForm extends React.Component {
     }
   }
 
+  newNumber(event) {
+    event.persist();
+    const targetValue = event.target.value;
+
+    if (targetValue === "") {
+      this.setState(({ todo }) => ({
+        todo: { ...todo, [event.target.name]: 0 }
+      }));
+      return;
+    }
+
+    const val = parseInt(targetValue);
+
+    if (!isNaN(val)) {
+      console.log("updating stae");
+      this.setState(({ todo }) => ({
+        todo: { ...todo, [event.target.name]: val }
+      }));
+    }
+  }
+
   render() {
     return (
       <form
@@ -72,25 +101,56 @@ class TodoItemForm extends React.Component {
         }}
       >
         {this.state.error ? this.state.error : ""}
-        <div>
+        <br />
+        <label>
           Title:
           <input
             type="text"
             name="title"
             value={this.state.todo.title}
             onChange={this.handleInput}
-            disabled={this.state.isOwner}
+            disabled={!this.state.isOwner}
           />
-        </div>
-        <div>
+        </label>
+        <br />
+        <label>
           Description:
           <textarea
             name="description"
             value={this.state.todo.description}
             onChange={this.handleInput}
           />
-        </div>
-        <button type="submit">Update</button>
+        </label>
+        <br />
+        <label>
+          Time spent (15 min increments)
+          <input
+            type="text"
+            value={this.state.todo.timeSpent}
+            name="timeSpent"
+            onChange={this.newNumber}
+          />
+        </label>
+        <br />
+        <label>
+          Assigned to:
+          <select
+            value={this.state.todo.assignedUserId || undefined}
+            onChange={this.newNumber}
+            name="assignedUserId"
+          >
+            <option value={null}>None</option>
+            {Object.keys(this.props.allUsers).map(userId => (
+              <option key={userId} value={userId}>
+                {this.props.allUsers[userId].email}
+              </option>
+            ))}
+          </select>
+        </label>
+        <br />
+        <button type="submit">
+          {this.props.newTodo ? "Create" : "Update"}
+        </button>
       </form>
     );
   }
@@ -98,7 +158,7 @@ class TodoItemForm extends React.Component {
 
 const mapStateToProps = ({ allUsers, user, todos }) => ({
   allUsers,
-  currentUserId: user.id,
+  currentUserId: user.userId,
   todos
 });
 

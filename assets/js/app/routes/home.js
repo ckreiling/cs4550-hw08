@@ -1,5 +1,5 @@
 import React from "react";
-import { Router } from "@reach/router";
+import { Router, Redirect } from "@reach/router";
 
 import withAuthentication from "../components/higher-order/with-authentication";
 import TodosList from "../components/todos-list";
@@ -11,8 +11,9 @@ function Home(props) {
       <TodosList path="todos">
         {/** Nested todoItemForm for rendering a todo */}
         <TodoItemForm path=":todoId" />
-        <TodoItemForm path="new-todo" />
+        <TodoItemForm path="new-todo" newTodo />
       </TodosList>
+      <Redirect from="*" to="todos" />
     </Router>
   );
 }

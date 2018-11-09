@@ -17,12 +17,15 @@ class TodoList extends React.Component {
 
     return (
       <div>
-        {todosArray.length !== 0 &&
-          todosArray.map(todo => (
-            <Link to={`/todos/${todo.id}`} key={todo.id}>
-              {todo.title}
-            </Link>
-          ))}
+        {todosArray.length !== 0 && (
+          <ul>
+            {todosArray.map(todo => (
+              <li key={todo.id}>
+                <Link to={`/todos/${todo.id}`}>{todo.title}</Link>
+              </li>
+            ))}
+          </ul>
+        )}
         {todosArray.length === 0 && "You have no todos!!!"}
         {this.props.children}
       </div>

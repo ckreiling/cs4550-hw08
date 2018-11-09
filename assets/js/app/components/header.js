@@ -15,6 +15,9 @@ function Header({ isLoggedIn, ...props }) {
         </h1>
         {isLoggedIn && (
           <nav className="nav">
+            <Link className="navLink" to="/todos/new-todo">
+              New Todo
+            </Link>
             <LogoutButton className="logoutButton" />
           </nav>
         )}
