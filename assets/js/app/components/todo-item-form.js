@@ -45,8 +45,13 @@ class TodoItemForm extends React.Component {
   handleInput(event) {
     if (event.target) {
       event.persist();
+      const target = event.target;
       this.setState(({ todo }) => ({
-        todo: { ...todo, [event.target.name]: event.target.value }
+        todo: {
+          ...todo,
+          [event.target.name]:
+            target.type === "checkbox" ? target.checked : target.value
+        }
       }));
     }
   }
@@ -119,6 +124,15 @@ class TodoItemForm extends React.Component {
             name="description"
             value={this.state.todo.description}
             onChange={this.handleInput}
+          />
+        </label>
+        <label>
+          Completed?{" "}
+          <input
+            type="checkbox"
+            checked={this.state.todo.completed}
+            onChange={this.handleInput}
+            name="completed"
           />
         </label>
         <br />
