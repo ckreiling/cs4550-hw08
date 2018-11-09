@@ -14,8 +14,8 @@ config :todos, TodosWeb.Endpoint,
   server: true,
   root: ".",
   version: Application.spec(:todos, :vsn),
-  http: [:inet6, port: 80],
-  url: [host: "tasks3.porchboys.com", port: System.get_env("PORT")],
+  http: [:inet6, port: System.get_env("PORT")],
+  url: [host: "tasks3.porchboys.com", port: 443, scheme: "https"],
   cache_static_manifest: "priv/static/cache_manifest.json",
   code_reloader: false
 
