@@ -15,8 +15,9 @@ config :todos, TodosWeb.Endpoint,
   root: ".",
   version: Application.spec(:todos, :vsn),
   http: [:inet6, port: System.get_env("PORT")],
-  url: [host: "localhost", port: System.get_env("PORT")],
-  cache_static_manifest: "priv/static/cache_manifest.json"
+  url: [host: "tasks3.porchboys.com", port: System.get_env("PORT")],
+  cache_static_manifest: "priv/static/cache_manifest.json",
+  code_reloader: false
 
 # Do not print debug messages in production
 config :logger, level: :info
